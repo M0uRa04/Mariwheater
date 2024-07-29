@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table
@@ -14,19 +13,17 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode(of = "id")
-public class City {
-
+public class Notifications {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String message;
 
-    private Float temperature;
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
-    @Column(name = "last_Updated")
-    private LocalDateTime lastUpdated;
-
-    @OneToMany(mappedBy = "city", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Notifications> notificationsList;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "city_id")
+    private City city;
 }

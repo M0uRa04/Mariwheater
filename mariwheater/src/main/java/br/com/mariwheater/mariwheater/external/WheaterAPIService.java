@@ -3,7 +3,6 @@ package br.com.mariwheater.mariwheater.external;
 import br.com.mariwheater.mariwheater.DTO.CityData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -34,8 +33,6 @@ public class WheaterAPIService {
         return url;
     }
 
-    //@Scheduled(fixedRate = 3600000) -> One hour request
-    @Scheduled(fixedRate = 60000)
     public List<CityData> fetchWeatherData() {
         var listOfCityData = new ArrayList<CityData>();
         for (String city : CITIES) {

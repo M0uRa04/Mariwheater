@@ -4,6 +4,7 @@ import br.com.mariwheater.mariwheater.DTO.CityData;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -24,17 +25,18 @@ public class City {
 
     private String name;
 
-    private Float temperature;
+    @Column(precision = 4, scale = 2)
+    private BigDecimal temperature;
 
     @Column(name = "last_Updated")
     private LocalDateTime lastUpdated;
 
-    @OneToMany(mappedBy = "city", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "city", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Notifications> notificationsList;
 
     public City(CityData cityData) {
         this.name = cityData.name();
-        this.temperature = cityData.temperature();
+        this.temperature = BigDecimal.valueOf(cityData.temperature());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         this.lastUpdated = LocalDateTime.parse(cityData.lastUpdated(), formatter);
     }

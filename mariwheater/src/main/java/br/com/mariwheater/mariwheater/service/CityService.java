@@ -47,4 +47,8 @@ public class CityService {
         String sql = "ALTER TABLE City ALTER COLUMN id RESTART WITH 1"; //H2
         jdbcTemplate.execute(sql);
     }
+
+    public List<City> getAllCitiesWithTemperatureIsDangerous () {
+        return cityRepository.getAllCitiesWithTemperatureIsDangerous();
+    }
 }

@@ -15,7 +15,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @EqualsAndHashCode(of = "id")
 public class City {
 
@@ -31,7 +30,7 @@ public class City {
     @Column(name = "last_Updated")
     private LocalDateTime lastUpdated;
 
-    @OneToMany(mappedBy = "city", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "city", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     private List<Notifications> notificationsList;
 
     public City(CityData cityData) {
@@ -39,5 +38,21 @@ public class City {
         this.temperature = BigDecimal.valueOf(cityData.temperature());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         this.lastUpdated = LocalDateTime.parse(cityData.lastUpdated(), formatter);
+    }
+
+    public void addNotification(Notifications notification) {
+        this.notificationsList.add(notification);
+        notification.setCity(this);
+    }
+
+    @Override
+    public String toString() {
+        return "City{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", temperature=" + temperature +
+                ", lastUpdated=" + lastUpdated +
+                ", notificationsList=" + notificationsList +
+                '}';
     }
 }

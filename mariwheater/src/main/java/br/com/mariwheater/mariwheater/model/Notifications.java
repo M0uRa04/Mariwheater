@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @EqualsAndHashCode(of = "id")
 public class Notifications {
     @Id
@@ -26,4 +25,20 @@ public class Notifications {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "city_id")
     private City city;
+
+    public Notifications (String message, City city) {
+        this.createdAt = LocalDateTime.now();
+        this.city = city;
+        this.message = message;
+    }
+
+    @Override
+    public String toString() {
+        return "Notifications{" +
+                "id=" + id +
+                ", message='" + message + '\'' +
+                ", createdAt=" + createdAt +
+                ", city=" + city.getName() +
+                '}';
+    }
 }

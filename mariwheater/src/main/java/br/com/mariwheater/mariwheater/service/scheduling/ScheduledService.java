@@ -23,7 +23,7 @@ public class ScheduledService {
         this.notificationsService = notificationsService;
     }
     //@Scheduled(fixedRate = 3600000) -> One hour request
-    @Scheduled(fixedRate = 15000)
+    @Scheduled(fixedRate = 60000)
     public void fetchDataAndSaveCities () {
         cityService.deleteLastHourRecords();
         cityService.resetAutoIncrement();
@@ -33,8 +33,18 @@ public class ScheduledService {
         }
     }
 
-    @Scheduled(fixedRate = 30000)
-    public void printTest () {
-    notificationsService.printAllCitiesIfTemperatureIsDangerous();
+    @Scheduled(fixedRate = 60000)
+    public void checkWeatherAndNotify() {
+        /*
+        BD RESPONSIBILITY;
+        List<City> allCities = cityService.convertCityData(wheaterAPIService.fetchWeatherData());
+         */
+        List<City> dangerousCities = cityService.getAllCitiesWithTemperatureIsDangerous();
+        notificationsService.createAllNotifications(dangerousCities);
     }
+
+//    @Scheduled(fixedRate = 30000)
+//    public void printTest () {
+//    notificationsService.printAllCitiesIfTemperatureIsDangerous();
+//    }
 }

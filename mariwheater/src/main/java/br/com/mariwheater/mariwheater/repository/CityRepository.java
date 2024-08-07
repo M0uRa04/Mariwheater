@@ -28,12 +28,12 @@ public interface CityRepository extends JpaRepository <City, Long> {
 
 //    REAL QUERY
 //    @Query(
-//            "SELECT from City c where c.temperature > 35.00 OR c.temperature < 0.00"
+//            "SELECT from City c where c.temperature > 35.00 OR c.temperature < 9.00"
 //    )
 
 //        TEST QUERY
     @Query(
-            "SELECT c from City c where c.temperature > 25.00 OR c.temperature < 0.00"
+            "SELECT c from City c where c.temperature > 25.00 OR c.temperature < 9.00"
     )
     List<City> getAllCitiesWithTemperatureIsDangerous();
 }

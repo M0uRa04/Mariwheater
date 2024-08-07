@@ -1,5 +1,6 @@
 package br.com.mariwheater.mariwheater.service;
 
+import br.com.mariwheater.mariwheater.DTO.CityData;
 import br.com.mariwheater.mariwheater.external.WheaterAPIService;
 import br.com.mariwheater.mariwheater.model.City;
 import br.com.mariwheater.mariwheater.repository.CityRepository;
@@ -7,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -26,6 +25,7 @@ public class CityService {
         cityRepository.save(city);
     }
 
+    //Substituir por saveAllFuturamente
     public void saveAllCities (List<City> cities) {
         for (City city : cities) {
             save(new City());
@@ -50,5 +50,11 @@ public class CityService {
 
     public List<City> getAllCitiesWithTemperatureIsDangerous () {
         return cityRepository.getAllCitiesWithTemperatureIsDangerous();
+    }
+
+    public List<City> convertCityData (List<CityData> cityData) {
+        return cityData.stream()
+                .map(City::new)
+                .toList();
     }
 }

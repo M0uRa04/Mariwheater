@@ -30,7 +30,7 @@ public class City {
     @Column(name = "last_Updated")
     private LocalDateTime lastUpdated;
 
-    @OneToMany(mappedBy = "city", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "city", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.EAGER)
     private List<Notifications> notificationsList;
 
     public City(CityData cityData) {

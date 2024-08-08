@@ -25,7 +25,6 @@ public class NotificationsService {
         List<Notifications> notifications = cities.stream()
                 .map(this::createNotification)
                 .collect(Collectors.toList());
-        notifications.forEach(System.out::println);
         notificationsRepository.saveAll(notifications);
     }
 
@@ -34,15 +33,15 @@ public class NotificationsService {
         cities.forEach(System.out::println);
     }
 
-    public Notifications createNotification (City city) {
+    public Notifications createNotification (City dangerousCity) {
         String message;
-        if (isTemperatureHigherThan35(city.getTemperature()) >= 0) {
-            message = "A temperatura está elevada em " + city.getName() + ". Está " + city.getTemperature() + " graus. É recomendado o uso de protetor solar para sair de casa.";
+        if (isTemperatureHigherThan35(dangerousCity.getTemperature()) >= 0) {
+            message = "A temperatura está elevada em " + dangerousCity.getName() + ". Está " + dangerousCity.getTemperature() + " graus. É recomendado o uso de protetor solar para sair de casa.";
         } else {
-            message = "A temperatura está baixa em " + city.getName() + ". Está " + city.getTemperature() + " graus. Não esqueça o agasalho ao sair de casa.";
+            message = "A temperatura está baixa em " + dangerousCity.getName() + ". Está " + dangerousCity.getTemperature() + " graus. Não esqueça o agasalho ao sair de casa.";
         }
-        Notifications notification = new Notifications(message, city);
-        city.addNotification(notification);
+        Notifications notification = new Notifications(message, dangerousCity);
+        dangerousCity.addNotification(notification);
         return notification;
     }
 

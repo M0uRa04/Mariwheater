@@ -33,18 +33,9 @@ public class ScheduledService {
         }
     }
 
-    @Scheduled(fixedRate = 60000)
+    @Scheduled(fixedRate = 61000)
     public void checkWeatherAndNotify() {
-        /*
-        BD RESPONSIBILITY;
-        List<City> allCities = cityService.convertCityData(wheaterAPIService.fetchWeatherData());
-         */
         List<City> dangerousCities = cityService.getAllCitiesWithTemperatureIsDangerous();
         notificationsService.createAllNotifications(dangerousCities);
     }
-
-//    @Scheduled(fixedRate = 30000)
-//    public void printTest () {
-//    notificationsService.printAllCitiesIfTemperatureIsDangerous();
-//    }
 }

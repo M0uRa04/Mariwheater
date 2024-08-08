@@ -24,7 +24,13 @@ public class WheaterAPIService {
 
     private static final String API_KEY = "03ffc5e3218f40948a9140740243007";
 
-    private static final List<String> CITIES = Arrays.asList("Sao Paulo", "Rio de Janeiro", "Belo Horizonte", "Piaui");
+    private static final List<String> CITIES = Arrays.asList(
+            "Brasilia", "Rio de Janeiro", "Sao Paulo", "Belo Horizonte", "Salvador",
+            "Fortaleza", "Recife", "Manaus", "Belem", "Vitória", "Curitiba", "Porto Alegre",
+            "Campo Grande", "Cuiaba", "Maceio", "Joao Pessoa", "Aracaju", "Natal",
+            "Teresina", "Palmas", "Boa Vista", "Macapa"
+    );
+
 
     private DataConverter converter = new DataConverter();
     public String constructURL (String city) {

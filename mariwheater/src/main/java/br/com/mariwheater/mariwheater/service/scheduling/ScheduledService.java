@@ -27,9 +27,9 @@ public class ScheduledService {
         this.notificationsService = notificationsService;
         this.mailService = mailService;
     }
-    //@Scheduled(fixedRate = 3600000) -> One hour request
+    @Scheduled(fixedRate = 3600000) // -> One hour request
     //@Scheduled(cron = "0 0 6,18 * * *") //De 12 em 12 horas
-    @Scheduled(fixedRate = 60000) //1 Minuto
+    //@Scheduled(fixedRate = 60000) //1 Minuto
     public void fetchDataAndSaveCities () {
         cityService.deleteLastHourRecords();
         cityService.resetAutoIncrement();
@@ -41,7 +41,8 @@ public class ScheduledService {
 
 
     //@Scheduled(cron = "0 0 7,19 * * *") //De 12 em 12 horas
-    @Scheduled(fixedRate = 60000) //1 Minuto
+    //@Scheduled(fixedRate = 60000) //1 Minuto
+    @Scheduled(fixedRate = 3600000) // -> One hour request
     public void checkWeatherAndNotify() {
         List<City> dangerousCities = cityService.getAllCitiesWithTemperatureIsDangerous();
         notificationsService.createAllNotifications(dangerousCities);

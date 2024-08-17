@@ -4,8 +4,8 @@ import br.com.mariwheater.mariwheater.DTO.CityData;
 import br.com.mariwheater.mariwheater.external.WheaterAPIService;
 import br.com.mariwheater.mariwheater.model.City;
 import br.com.mariwheater.mariwheater.model.Notifications;
-import br.com.mariwheater.mariwheater.service.CityService;
-import br.com.mariwheater.mariwheater.service.NotificationsService;
+import br.com.mariwheater.mariwheater.service.city.CityService;
+import br.com.mariwheater.mariwheater.service.notifications.NotificationsService;
 import br.com.mariwheater.mariwheater.service.mail.MailService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -28,7 +28,8 @@ public class ScheduledService {
         this.mailService = mailService;
     }
     //@Scheduled(fixedRate = 3600000) -> One hour request
-    @Scheduled(cron = "0 0 6,18 * * *") //De 12 em 12 horas
+    //@Scheduled(cron = "0 0 6,18 * * *") //De 12 em 12 horas
+    @Scheduled(fixedRate = 60000) //1 Minuto
     public void fetchDataAndSaveCities () {
         cityService.deleteLastHourRecords();
         cityService.resetAutoIncrement();
@@ -38,25 +39,20 @@ public class ScheduledService {
         }
     }
 
-    @Scheduled(cron = "0 0 7,19 * * *") //De 12 em 12 horas
+
+    //@Scheduled(cron = "0 0 7,19 * * *") //De 12 em 12 horas
+    @Scheduled(fixedRate = 60000) //1 Minuto
     public void checkWeatherAndNotify() {
         List<City> dangerousCities = cityService.getAllCitiesWithTemperatureIsDangerous();
         notificationsService.createAllNotifications(dangerousCities);
     }
 
-    @Scheduled(fixedRate = 6000) //De 12 em 12 horas
-    public void checkWeatherAndNotifyTest() {
-        List<City> dangerousCities = cityService.getAllCitiesWithTemperatureIsDangerous();
-        notificationsService.createAllNotifications(dangerousCities);
+    //@Scheduled(fixedRate = 60000)
+    public void sendTestEmail () {
+            mailService.sendSimpleEmail("robsonmoura970@gmail.com", "Email teste ", "Deu certo");
     }
 
-
-//    @Scheduled(fixedRate = 60000)
-//    public void sendTestEmail () {
-//            mailService.sendSimpleEmail("robsonmoura970@gmail.com", "Email teste ", "Deu certo");
-//    }
-
-    @Scheduled(cron = "0 20 7,19 * * *")//De 12 em 12 horas
+    //@Scheduled(cron = "0 20 7,19 * * *")//De 12 em 12 horas
     public void sendNotificationMail() {
         var notifitionsList = notificationsService.getAllNotifications();
         for (Notifications n : notifitionsList) {
@@ -64,7 +60,7 @@ public class ScheduledService {
         }
     }
 
-    @Scheduled(fixedRate = 6000) //De 12 em 12 horas
+    //@Scheduled(fixedRate = 6000) //De 12 em 12 horas
     public void sendNotificationMailTest() {
         var notifitionsList = notificationsService.getAllNotifications();
         for (Notifications n : notifitionsList) {

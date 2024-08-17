@@ -1,5 +1,6 @@
 package br.com.mariwheater.mariwheater.model;
 
+import br.com.mariwheater.mariwheater.DTO.DataAccount;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,4 +23,10 @@ public class Account {
 
     @Column(name = "CITY_NAME")
     private String cityName;
+
+    public Account (DataAccount dataAccount) {
+        this.name = dataAccount.name();
+        this.email = dataAccount.email();
+        this.cityName = dataAccount.cityName();
+    }
 }

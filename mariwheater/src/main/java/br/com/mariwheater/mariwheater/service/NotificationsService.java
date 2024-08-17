@@ -53,4 +53,8 @@ public class NotificationsService {
         //Test case
         return temperature.compareTo(BigDecimal.valueOf(25.00));
     }
+
+    public List<Notifications> getAllNotifications () {
+        return notificationsRepository.findAll();
+    }
 }

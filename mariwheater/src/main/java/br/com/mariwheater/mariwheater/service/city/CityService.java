@@ -1,4 +1,4 @@
-package br.com.mariwheater.mariwheater.service;
+package br.com.mariwheater.mariwheater.service.city;
 
 import br.com.mariwheater.mariwheater.DTO.CityData;
 import br.com.mariwheater.mariwheater.external.WheaterAPIService;
@@ -43,8 +43,8 @@ public class CityService {
     }
 
     public void resetAutoIncrement() {
-        String sql = "ALTER TABLE City AUTO_INCREMENT = 1";
-        //String sql = "ALTER TABLE City ALTER COLUMN id RESTART WITH 1"; //H2
+        //String sql = "ALTER TABLE City AUTO_INCREMENT = 1"; //MySQL
+        String sql = "ALTER TABLE City ALTER COLUMN id RESTART WITH 1"; //H2
         jdbcTemplate.execute(sql);
     }
 

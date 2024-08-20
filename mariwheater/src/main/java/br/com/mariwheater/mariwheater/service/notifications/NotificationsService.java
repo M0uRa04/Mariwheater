@@ -1,8 +1,9 @@
-package br.com.mariwheater.mariwheater.service;
+package br.com.mariwheater.mariwheater.service.notifications;
 
 import br.com.mariwheater.mariwheater.model.City;
 import br.com.mariwheater.mariwheater.model.Notifications;
 import br.com.mariwheater.mariwheater.repository.NotificationsRepository;
+import br.com.mariwheater.mariwheater.service.city.CityService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

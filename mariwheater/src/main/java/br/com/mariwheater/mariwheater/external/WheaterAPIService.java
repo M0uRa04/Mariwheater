@@ -32,7 +32,7 @@ public class WheaterAPIService {
     );
 
 
-    private DataConverter converter = new DataConverter();
+    private final DataConverter converter = new DataConverter();
     public String constructURL (String city) {
         var url = API_URL + city.replace(" ", "%20")
                 + "&" + "lang=pt" + "&key=" + API_KEY;

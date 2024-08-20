@@ -21,4 +21,19 @@ public class AccountService {
     public List<Account> getAllAccounts () {
         return accountRepository.findAll();
     }
+
+    public Account getAccount(Long id) {
+        return accountRepository.findById(id).orElseThrow();
+    }
+
+    public Account updateAccount(Account foundAccount, DataAccount dataAccount) {
+        foundAccount.setCityName(dataAccount.cityName());
+        foundAccount.setEmail(dataAccount.email());
+        accountRepository.save(foundAccount);
+        return foundAccount;
+    }
+
+    public void deleteAccount(Long id) {
+        accountRepository.deleteById(id);
+    }
 }

@@ -5,10 +5,7 @@ import br.com.mariwheater.mariwheater.service.account.AccountService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -24,5 +21,28 @@ public class AccountController {
         accountService.createAndSaveAccount(dataAccount);
         var uri = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUri();
         return ResponseEntity.created(uri).body(dataAccount);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity getAllAccount () {
+        return ResponseEntity.ok(accountService.getAllAccounts());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity findAccountById (@PathVariable Long id) {
+        return ResponseEntity.ok(accountService.getAccount(id));
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity updateAccount (@PathVariable Long id, @RequestBody @Valid  DataAccount dataAccount ) {
+        var foundAccount = accountService.getAccount(id);
+        var updatedAccount = accountService.updateAccount(foundAccount, dataAccount);
+        return ResponseEntity.ok(updatedAccount);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteAccount (@PathVariable Long id) {
+        accountService.deleteAccount(id);
+        return ResponseEntity.noContent().build();
     }
 }

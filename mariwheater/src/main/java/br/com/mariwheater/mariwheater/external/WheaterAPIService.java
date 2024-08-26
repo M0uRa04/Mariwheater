@@ -2,6 +2,7 @@ package br.com.mariwheater.mariwheater.external;
 
 import br.com.mariwheater.mariwheater.DTO.CityData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -15,14 +16,9 @@ public class WheaterAPIService {
 
     @Autowired
     private RestTemplate restTemplate;
-
-    /*
-    Exemplo de requisicão com a cidade de São Paulo
-    http://api.weatherapi.com/v1/current.json?key=03ffc5e3218f40948a9140740243007&q=São Paulo&aqi=no
-    */
     private static final String API_URL = "http://api.weatherapi.com/v1/current.json?q=";
-
-    private static final String API_KEY = "03ffc5e3218f40948a9140740243007";
+    @Value("${API_KEY_WeaterAPI}")
+    private String API_KEY;
 
     private static final List<String> CITIES = Arrays.asList(
             "Brasilia", "Rio de Janeiro", "Sao Paulo", "Belo Horizonte", "Salvador",

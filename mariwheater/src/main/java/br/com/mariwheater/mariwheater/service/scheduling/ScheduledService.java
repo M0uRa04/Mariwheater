@@ -2,13 +2,12 @@ package br.com.mariwheater.mariwheater.service.scheduling;
 
 import br.com.mariwheater.mariwheater.DTO.CityData;
 import br.com.mariwheater.mariwheater.external.WheaterAPIService;
-import br.com.mariwheater.mariwheater.model.Account;
 import br.com.mariwheater.mariwheater.model.City;
 import br.com.mariwheater.mariwheater.model.Notifications;
 import br.com.mariwheater.mariwheater.service.account.AccountService;
 import br.com.mariwheater.mariwheater.service.city.CityService;
-import br.com.mariwheater.mariwheater.service.notifications.NotificationsService;
 import br.com.mariwheater.mariwheater.service.mail.MailService;
+import br.com.mariwheater.mariwheater.service.notifications.NotificationsService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -53,29 +52,12 @@ public class ScheduledService {
         notificationsService.createAllNotifications(dangerousCities);
     }
 
-    //@Scheduled(fixedRate = 60000)
-    public void sendTestEmail () {
-            mailService.sendSimpleEmail("robsonmoura970@gmail.com", "Email teste ", "Deu certo");
-    }
-
     //@Scheduled(cron = "0 20 7,19 * * *")//De 12 em 12 horas
+    @Scheduled(fixedRate = 120000)
     public void sendNotificationMail() {
         var notifitionsList = notificationsService.getAllNotifications();
         for (Notifications n : notifitionsList) {
             mailService.sendSimpleEmail("robsonmoura970@gmail.com", "Alerta de temperatura", n.getMessage());
-        }
-    }
-
-    @Scheduled(fixedRate = 60000) //1 Minuto
-    public void sendNotificationMailTest() {
-        var notifitionsList = notificationsService.getAllNotifications();
-        var accountList = accountService.getAllAccounts();
-        for (Notifications n : notifitionsList) {
-            for (Account a : accountList) {
-                if (n.getCity().getName().equalsIgnoreCase(a.getCityName())) {
-                    mailService.sendSimpleEmail(a.getEmail(), "Alerta de temperatura", n.getMessage());
-                }
-            }
         }
     }
 }

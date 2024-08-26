@@ -35,9 +35,10 @@ public class ScheduledService {
     //@Scheduled(cron = "0 0 6,18 * * *") //De 12 em 12 horas
     @Scheduled(fixedRate = 60000) //1 Minuto
     public void fetchDataAndSaveCities () {
+        var serializableCities = wheaterAPIService.requestCities();
         cityService.deleteLastHourRecords();
         cityService.resetAutoIncrement();
-        List<CityData> cities = wheaterAPIService.fetchWeatherData();
+        List<CityData> cities = wheaterAPIService.cityDataUnmarshalling(serializableCities);
         for (CityData data : cities) {
             cityService.save(new City(data));
         }
@@ -45,19 +46,19 @@ public class ScheduledService {
 
 
     //@Scheduled(cron = "0 0 7,19 * * *") //De 12 em 12 horas
-    @Scheduled(fixedRate = 60000) //1 Minuto
+    @Scheduled(fixedRate = 65000) //1 Minuto
     //@Scheduled(fixedRate = 3600000) // -> One hour request
     public void checkWeatherAndNotify() {
         List<City> dangerousCities = cityService.getAllCitiesWithTemperatureIsDangerous();
         notificationsService.createAllNotifications(dangerousCities);
     }
 
-    //@Scheduled(cron = "0 20 7,19 * * *")//De 12 em 12 horas
-    @Scheduled(fixedRate = 120000)
-    public void sendNotificationMail() {
-        var notifitionsList = notificationsService.getAllNotifications();
-        for (Notifications n : notifitionsList) {
-            mailService.sendSimpleEmail("robsonmoura970@gmail.com", "Alerta de temperatura", n.getMessage());
-        }
-    }
+//    //@Scheduled(cron = "0 20 7,19 * * *")//De 12 em 12 horas
+//    @Scheduled(fixedRate = 120000)
+//    public void sendNotificationMail() {
+//        var notifitionsList = notificationsService.getAllNotifications();
+//        for (Notifications n : notifitionsList) {
+//            mailService.sendSimpleEmail("robsonmoura970@gmail.com", "Alerta de temperatura", n.getMessage());
+//        }
+//    }
 }

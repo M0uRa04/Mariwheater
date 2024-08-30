@@ -10,12 +10,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class DataService {
+public class DataFetchScheduler {
 
     private final WheaterAPIService wheaterAPIService;
     private final CityService cityService;
 
-    public DataService(WheaterAPIService wheaterAPIService, CityService cityService) {
+    public DataFetchScheduler(WheaterAPIService wheaterAPIService, CityService cityService) {
         this.wheaterAPIService = wheaterAPIService;
         this.cityService = cityService;
     }

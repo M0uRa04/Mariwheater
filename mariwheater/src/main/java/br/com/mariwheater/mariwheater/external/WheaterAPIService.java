@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class WheaterAPIService {
@@ -35,8 +36,8 @@ public class WheaterAPIService {
         return url;
     }
 
-    public List<CityData> fetchWeatherData() {
-        var listOfCityData = new ArrayList<CityData>();
+    public List<String> requestCities () {
+        var listOfResponses = new ArrayList<String>();
         for (String city : CITIES) {
             try {
                 String url = constructURL(city);
@@ -44,15 +45,19 @@ public class WheaterAPIService {
 
                 if (response.getStatusCode().is2xxSuccessful()) {
                     String json = response.getBody();
-                    DataWheaterResponse wheaterSerializableObject = converter.obterDados(json, DataWheaterResponse.class);
-                    //System.out.println(wheaterSerializableObject.toString());
-                    listOfCityData.add(new CityData(wheaterSerializableObject));
+                    listOfResponses.add(json);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        //listOfCityData.forEach(System.out::println);
-        return listOfCityData;
+        return listOfResponses;
+    }
+
+    public List<CityData> cityDataUnmarshalling (List<String> listOfResponses) {
+        return listOfResponses.stream()
+                .map(response -> converter.obterDados(response, DataWheaterResponse.class))
+                .map(CityData::new)
+                .collect(Collectors.toList());
     }
 }

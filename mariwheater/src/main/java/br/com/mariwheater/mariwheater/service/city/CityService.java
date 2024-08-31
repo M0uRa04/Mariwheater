@@ -43,8 +43,8 @@ public class CityService {
     }
 
     public void resetAutoIncrement() {
-        //String sql = "ALTER TABLE City AUTO_INCREMENT = 1"; //MySQL
-        String sql = "ALTER TABLE City ALTER COLUMN id RESTART WITH 1"; //H2
+        String sql = "ALTER TABLE City AUTO_INCREMENT = 1"; //MySQL
+        //String sql = "ALTER TABLE City ALTER COLUMN id RESTART WITH 1"; //H2
         jdbcTemplate.execute(sql);
     }
 

@@ -28,9 +28,6 @@ public class NotificationScheduler {
         this.cityService = cityService;
     }
 
-    //@Scheduled(cron = "0 0 7,19 * * *") //De 12 em 12 horas
-    @Scheduled(fixedRate = 65000) //1 Minuto
-    //@Scheduled(fixedRate = 3600000) // -> One hour request
     public void constructNotifications() {
         List<City> dangerousCities = cityService.getAllCitiesWithTemperatureIsDangerous();
         notificationsService.createAllNotifications(dangerousCities);

@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,10 +46,20 @@ public class WheaterAPIService {
                 if (response.getStatusCode().is2xxSuccessful()) {
                     String json = response.getBody();
                     listOfResponses.add(json);
+                } else  {
+                    throw new RuntimeException("Não foi possível obter os dados da cidade");
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (HttpClientErrorException e) {
+                throw new RuntimeException("Erro do cliente ao solicitar dados para a cidade: " + city + ". Código de status: " + e.getStatusCode(), e);
+            } catch (HttpServerErrorException e) {
+                throw new RuntimeException("Erro do servidor ao solicitar dados para a cidade: " + city + ". Código de status: " + e.getStatusCode(), e);
+            } catch (ResourceAccessException e) {
+                throw new RuntimeException("Erro ao acessar o recurso para a cidade: " + city + ". Causa: " + e.getMessage(), e);
+            } catch (RestClientException e) {
+
+                throw new RuntimeException("Ocorreu um erro ao recuperar dados para a cidade: " + city, e);
             }
+
         }
         return listOfResponses;
     }

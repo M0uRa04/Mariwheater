@@ -1,5 +1,6 @@
 package br.com.mariwheater.mariwheater.external;
 
+import br.com.mariwheater.mariwheater.infra.CustomExceptions.ProcessamentoDeDadosJsonException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -12,7 +13,7 @@ public class DataConverter implements IDataConverter{
         try {
             return mapper.readValue(json, tClass);
         } catch (JsonProcessingException ex) {
-            throw new RuntimeException(ex);
+            throw new ProcessamentoDeDadosJsonException("Erro ao processar o JSON.", ex);
         }
     }
 }

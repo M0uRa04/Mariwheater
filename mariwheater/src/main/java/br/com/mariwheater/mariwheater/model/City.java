@@ -1,6 +1,6 @@
 package br.com.mariwheater.mariwheater.model;
 
-import br.com.mariwheater.mariwheater.DTO.CityData;
+import br.com.mariwheater.mariwheater.dto.CityData;
 import jakarta.persistence.*;
 import lombok.*;
 

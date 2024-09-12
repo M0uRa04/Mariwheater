@@ -1,6 +1,6 @@
 package br.com.mariwheater.mariwheater.service.account;
 
-import br.com.mariwheater.mariwheater.DTO.DataAccount;
+import br.com.mariwheater.mariwheater.dto.DataAccount;
 import br.com.mariwheater.mariwheater.model.Account;
 import br.com.mariwheater.mariwheater.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,5 +35,9 @@ public class AccountService {
 
     public void deleteAccount(Long id) {
         accountRepository.deleteById(id);
+    }
+
+    public List<Account> getAccountByCityName (String cityName) {
+        return accountRepository.getAccountByCityName(cityName);
     }
 }

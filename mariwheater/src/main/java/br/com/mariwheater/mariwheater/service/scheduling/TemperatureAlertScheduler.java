@@ -1,11 +1,19 @@
 package br.com.mariwheater.mariwheater.service.scheduling;
 
+import br.com.mariwheater.mariwheater.model.Account;
+import br.com.mariwheater.mariwheater.model.City;
 import br.com.mariwheater.mariwheater.model.Notifications;
 import br.com.mariwheater.mariwheater.service.account.AccountService;
+import br.com.mariwheater.mariwheater.service.city.CityService;
 import br.com.mariwheater.mariwheater.service.mail.MailService;
 import br.com.mariwheater.mariwheater.service.notifications.NotificationsService;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class TemperatureAlertScheduler {
@@ -14,20 +22,43 @@ public class TemperatureAlertScheduler {
 
     private final MailService mailService;
 
+    private final CityService cityService;
+
     private final AccountService accountService;
 
-    public TemperatureAlertScheduler(NotificationsService notificationsService, MailService mailService, AccountService accountService) {
+    public TemperatureAlertScheduler(NotificationsService notificationsService, MailService mailService, CityService cityService, AccountService accountService) {
         this.notificationsService = notificationsService;
         this.mailService = mailService;
+        this.cityService = cityService;
         this.accountService = accountService;
     }
 
-    //@Scheduled(cron = "0 20 7,19 * * *")//De 12 em 12 horas
-    @Scheduled(fixedRate = 120000)
     public void sendNotificationMail() {
-        var notifitionsList = notificationsService.getAllNotifications();
-        for (Notifications n : notifitionsList) {
-            mailService.sendSimpleEmail("robsonmoura970@gmail.com", "Alerta de temperatura", n.getMessage());
+        Map<String, String> accountMap = new HashMap<>();
+        //Consultar todas as notificações criadas
+        var notificationsList = notificationsService.getAllNotifications();
+
+        //Consultar todas as cidades das notificações pelo ID
+        var citiesList = cityService.getAllCitiesWithTemperatureIsDangerous();
+
+        //Consultar todos os usuários pertencentes aquela cidade
+        for (City c : citiesList) {
+            var account = accountService.getAccountByCityName(c.getName());
+            if (!account.isEmpty()) {
+                account.forEach(a -> accountMap.put(a.getEmail(), a.getCityName()));
+            }
         }
+        System.out.println(accountMap);
+        //Notificar os usuários
+        accountMap.forEach((email, cityName) -> {
+            for (Notifications n : notificationsList) {
+                if (n.getCity().getName().equalsIgnoreCase(cityName)) {
+                    mailService.sendSimpleEmail(email, "Alerta de Temperatura", n.getMessage());
+                }
+            }
+        });
+
     }
+
+
 }

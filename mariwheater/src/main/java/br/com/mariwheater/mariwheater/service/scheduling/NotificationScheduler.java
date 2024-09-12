@@ -5,7 +5,6 @@ import br.com.mariwheater.mariwheater.service.account.AccountService;
 import br.com.mariwheater.mariwheater.service.city.CityService;
 import br.com.mariwheater.mariwheater.service.mail.MailService;
 import br.com.mariwheater.mariwheater.service.notifications.NotificationsService;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

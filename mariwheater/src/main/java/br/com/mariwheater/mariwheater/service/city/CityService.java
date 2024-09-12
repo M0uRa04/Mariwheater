@@ -1,9 +1,10 @@
 package br.com.mariwheater.mariwheater.service.city;
 
-import br.com.mariwheater.mariwheater.DTO.CityData;
+import br.com.mariwheater.mariwheater.dto.CityData;
 import br.com.mariwheater.mariwheater.external.WheaterAPIService;
 import br.com.mariwheater.mariwheater.model.City;
 import br.com.mariwheater.mariwheater.repository.CityRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -56,5 +57,13 @@ public class CityService {
         return cityData.stream()
                 .map(City::new)
                 .toList();
+    }
+
+    public City getCityById (Long cityId) {
+        try {
+            return cityRepository.getReferenceById(cityId);
+        } catch (EntityNotFoundException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }

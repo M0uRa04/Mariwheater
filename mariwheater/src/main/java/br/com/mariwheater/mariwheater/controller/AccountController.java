@@ -1,14 +1,12 @@
 package br.com.mariwheater.mariwheater.controller;
 
-import br.com.mariwheater.mariwheater.DTO.DataAccount;
+import br.com.mariwheater.mariwheater.dto.DataAccount;
 import br.com.mariwheater.mariwheater.service.account.AccountService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import java.net.URI;
 
 @RestController
 @RequestMapping("/account")
@@ -28,6 +26,11 @@ public class AccountController {
         return ResponseEntity.ok(accountService.getAllAccounts());
     }
 
+    @GetMapping("/city/{cityName}")
+    public ResponseEntity getAccountByCityName (@PathVariable String cityName) {
+        return ResponseEntity.ok(accountService.getAccountByCityName(cityName));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity findAccountById (@PathVariable Long id) {
         return ResponseEntity.ok(accountService.getAccount(id));
@@ -45,4 +48,6 @@ public class AccountController {
         accountService.deleteAccount(id);
         return ResponseEntity.noContent().build();
     }
+
+
 }

@@ -1,10 +1,9 @@
 package br.com.mariwheater.mariwheater.service.scheduling;
 
-import br.com.mariwheater.mariwheater.DTO.CityData;
+import br.com.mariwheater.mariwheater.dto.CityData;
 import br.com.mariwheater.mariwheater.external.WheaterAPIService;
 import br.com.mariwheater.mariwheater.model.City;
 import br.com.mariwheater.mariwheater.service.city.CityService;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

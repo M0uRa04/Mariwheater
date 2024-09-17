@@ -4,12 +4,16 @@ import br.com.mariwheater.mariwheater.dto.CityData;
 import br.com.mariwheater.mariwheater.external.WheaterAPIService;
 import br.com.mariwheater.mariwheater.model.City;
 import br.com.mariwheater.mariwheater.repository.CityRepository;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CityService {
@@ -19,18 +23,22 @@ public class CityService {
     @Autowired
     private CityRepository cityRepository;
 
+    @PersistenceContext
+    private EntityManager em;
+
     @Autowired
     JdbcTemplate jdbcTemplate;
 
+    @Deprecated
     public void save (City city) {
         cityRepository.save(city);
     }
 
-    //Substituir por saveAllFuturamente
-    public void saveAllCities (List<City> cities) {
-        for (City city : cities) {
-            save(new City());
-        }
+    @Transactional
+    public void saveAllCities (List<CityData> cities) {
+        cityRepository.saveAll(cities.stream().map(City::new).collect(Collectors.toList()));
+        em.flush();
+        em.clear();
     }
 
     public void deleteLastHourRecords () {

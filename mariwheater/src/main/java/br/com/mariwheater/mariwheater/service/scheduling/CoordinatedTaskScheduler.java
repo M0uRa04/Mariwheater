@@ -30,7 +30,7 @@ public class CoordinatedTaskScheduler {
         notificationScheduler.constructNotifications();
     }
 
-    @Scheduled(fixedRate = 100000)
+    //@Scheduled(fixedRate = 100000)
     public void alertTemperature () {
         temperatureAlertScheduler.sendNotificationMail();
     }

@@ -7,6 +7,7 @@ import br.com.mariwheater.mariwheater.service.city.CityService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DataFetchScheduler {
@@ -20,9 +21,7 @@ public class DataFetchScheduler {
     }
 
     private void saveCities (List<CityData> cityDataList) {
-        for (CityData data : cityDataList) {
-            cityService.save(new City(data));
-        }
+        cityService.saveAllCities(cityDataList);
     }
     public void fetchDataAndSaveCities () {
         var serializableCities = wheaterAPIService.requestCities();

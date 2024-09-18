@@ -1,6 +1,6 @@
 package br.com.mariwheater.mariwheater.external;
 
-import br.com.mariwheater.mariwheater.DTO.CityData;
+import br.com.mariwheater.mariwheater.dto.CityData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;

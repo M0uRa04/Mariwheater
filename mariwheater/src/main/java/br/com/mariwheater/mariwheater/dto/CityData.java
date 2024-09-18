@@ -1,4 +1,4 @@
-package br.com.mariwheater.mariwheater.DTO;
+package br.com.mariwheater.mariwheater.dto;
 
 import br.com.mariwheater.mariwheater.external.DataWheaterResponse;
 

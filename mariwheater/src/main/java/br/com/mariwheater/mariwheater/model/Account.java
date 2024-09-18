@@ -1,6 +1,6 @@
 package br.com.mariwheater.mariwheater.model;
 
-import br.com.mariwheater.mariwheater.DTO.DataAccount;
+import br.com.mariwheater.mariwheater.dto.DataAccount;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,6 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
+@ToString
 public class Account {
 
     @Id

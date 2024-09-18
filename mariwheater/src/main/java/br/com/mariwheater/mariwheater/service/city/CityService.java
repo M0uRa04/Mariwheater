@@ -1,14 +1,19 @@
 package br.com.mariwheater.mariwheater.service.city;
 
-import br.com.mariwheater.mariwheater.DTO.CityData;
+import br.com.mariwheater.mariwheater.dto.CityData;
 import br.com.mariwheater.mariwheater.external.WheaterAPIService;
 import br.com.mariwheater.mariwheater.model.City;
 import br.com.mariwheater.mariwheater.repository.CityRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CityService {
@@ -18,24 +23,31 @@ public class CityService {
     @Autowired
     private CityRepository cityRepository;
 
+    @PersistenceContext
+    private EntityManager em;
+
     @Autowired
     JdbcTemplate jdbcTemplate;
 
+    @Deprecated
     public void save (City city) {
         cityRepository.save(city);
     }
 
-    //Substituir por saveAllFuturamente
-    public void saveAllCities (List<City> cities) {
-        for (City city : cities) {
-            save(new City());
-        }
+    @Transactional
+    public void saveAllCities (List<CityData> cities) {
+        cityRepository.saveAll(cities.stream().map(City::new).collect(Collectors.toList()));
+        em.flush();
+        em.clear();
     }
 
+    @Transactional
     public void deleteLastHourRecords () {
         if(areThereAnyCities()) {
             cityRepository.deleteAll();
         }
+        em.flush();
+        em.clear();
     }
 
     public boolean areThereAnyCities() {
@@ -56,5 +68,13 @@ public class CityService {
         return cityData.stream()
                 .map(City::new)
                 .toList();
+    }
+
+    public City getCityById (Long cityId) {
+        try {
+            return cityRepository.getReferenceById(cityId);
+        } catch (EntityNotFoundException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }

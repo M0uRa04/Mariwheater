@@ -4,6 +4,8 @@ import br.com.mariwheater.mariwheater.model.City;
 import br.com.mariwheater.mariwheater.model.Notifications;
 import br.com.mariwheater.mariwheater.repository.NotificationsRepository;
 import br.com.mariwheater.mariwheater.service.city.CityService;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,12 +23,17 @@ public class NotificationsService {
     @Autowired
     private CityService cityService;
 
+    @PersistenceContext
+    private EntityManager em;
+
     @Transactional
     public void createAllNotifications (List<City> cities) {
         List<Notifications> notifications = cities.stream()
                 .map(this::createNotification)
                 .collect(Collectors.toList());
         notificationsRepository.saveAll(notifications);
+        em.flush();
+        em.clear();
     }
 
     public void printAllCitiesIfTemperatureIsDangerous () {

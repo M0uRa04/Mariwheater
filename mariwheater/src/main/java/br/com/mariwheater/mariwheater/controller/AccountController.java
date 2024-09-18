@@ -28,7 +28,7 @@ public class AccountController {
 
     @GetMapping("/city/{cityName}")
     public ResponseEntity getAccountByCityName (@PathVariable String cityName) {
-        return ResponseEntity.ok(accountService.getAccountByCityName(cityName));
+        return ResponseEntity.ok(accountService.getAccountsByCityName(cityName));
     }
 
     @GetMapping("/{id}")

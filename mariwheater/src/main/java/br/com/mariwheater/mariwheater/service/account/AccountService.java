@@ -37,7 +37,7 @@ public class AccountService {
         accountRepository.deleteById(id);
     }
 
-    public List<Account> getAccountByCityName (String cityName) {
+    public List<Account> getAccountsByCityName(String cityName) {
         return accountRepository.getAccountByCityName(cityName);
     }
 }

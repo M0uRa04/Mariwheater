@@ -1,6 +1,5 @@
 package br.com.mariwheater.mariwheater.service.scheduling;
 
-import br.com.mariwheater.mariwheater.model.Account;
 import br.com.mariwheater.mariwheater.model.City;
 import br.com.mariwheater.mariwheater.model.Notifications;
 import br.com.mariwheater.mariwheater.service.account.AccountService;
@@ -9,11 +8,9 @@ import br.com.mariwheater.mariwheater.service.mail.MailService;
 import br.com.mariwheater.mariwheater.service.notifications.NotificationsService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class TemperatureAlertScheduler {
@@ -33,32 +30,38 @@ public class TemperatureAlertScheduler {
         this.accountService = accountService;
     }
 
-    public void sendNotificationMail() {
-        Map<String, String> accountMap = new HashMap<>();
-        //Consultar todas as notificações criadas
+    public void sendNotificationMail () {
         var notificationsList = notificationsService.getAllNotifications();
+        var citiesList = getCitiesFromNotifications(notificationsList);
+        var accountMap = getAccountMapByCities(citiesList);
 
-        //Consultar todas as cidades das notificações pelo ID
-        var citiesList = cityService.getAllCitiesWithTemperatureIsDangerous();
-
-        //Consultar todos os usuários pertencentes aquela cidade
-        for (City c : citiesList) {
-            var account = accountService.getAccountByCityName(c.getName());
-            if (!account.isEmpty()) {
-                account.forEach(a -> accountMap.put(a.getEmail(), a.getCityName()));
-            }
-        }
-        System.out.println(accountMap);
-        //Notificar os usuários
-        accountMap.forEach((email, cityName) -> {
-            for (Notifications n : notificationsList) {
-                if (n.getCity().getName().equalsIgnoreCase(cityName)) {
-                    mailService.sendSimpleEmail(email, "Alerta de Temperatura", n.getMessage());
-                }
-            }
-        });
-
+        sendEmails(accountMap, notificationsList);
     }
 
+    private List<City> getCitiesFromNotifications (List<Notifications> notificationsList){
+        return notificationsList.stream()
+                .map(Notifications::getCity)
+                .distinct().toList();
+    }
+
+    private Map<String, String> getAccountMapByCities(List<City> citiesList) {
+        Map<String, String> accountMap = new HashMap<>();
+        for (City city : citiesList) {
+            var accounts = accountService.getAccountsByCityName(city.getName());
+            if (!accounts.isEmpty()) {
+                accounts.forEach(account -> accountMap.put(account.getEmail(), account.getCityName()));
+            }
+        }
+        return accountMap;
+    }
+
+    private void sendEmails (Map<String, String> accountMap, List<Notifications> notificationsList) {
+        accountMap.forEach((email, cityName) -> {
+            notificationsList.stream()
+                    .filter(notification -> notification.getCity().getName().equalsIgnoreCase(cityName))
+                    .findFirst()
+                    .ifPresent(notification -> mailService.sendSimpleEmail(email, "Mariwheater API: Alerta de temperatura", notification.getMessage()));
+        });
+    }
 
 }

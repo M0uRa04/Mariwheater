@@ -41,10 +41,13 @@ public class CityService {
         em.clear();
     }
 
+    @Transactional
     public void deleteLastHourRecords () {
         if(areThereAnyCities()) {
             cityRepository.deleteAll();
         }
+        em.flush();
+        em.clear();
     }
 
     public boolean areThereAnyCities() {

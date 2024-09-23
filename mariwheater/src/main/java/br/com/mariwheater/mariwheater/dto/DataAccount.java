@@ -12,6 +12,9 @@ public record DataAccount (
     String email,
 
     @NotBlank
-    String cityName
+    String cityName,
+
+    @NotBlank
+    String password
 ){
 }

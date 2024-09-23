@@ -39,6 +39,7 @@ public class Account implements UserDetails {
         this.name = dataAccount.name();
         this.email = dataAccount.email();
         this.cityName = dataAccount.cityName();
+        this.password = dataAccount.password();
     }
 
     @Override

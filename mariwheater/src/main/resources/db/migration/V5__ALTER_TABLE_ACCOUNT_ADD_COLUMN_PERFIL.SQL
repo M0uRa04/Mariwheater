@@ -1,0 +1,2 @@
+ALTER TABLE account
+ADD perfil varchar(20) NOT NULL DEFAULT 'ROLE_USER';

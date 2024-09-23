@@ -38,16 +38,13 @@ public class Account implements UserDetails {
     @Column(name = "CITY_NAME")
     private String cityName;
 
-    private Account () {
-        this.isAtivo = true;
-        this.perfil = Perfis.ROLE_USER;
-    }
-
     public Account (DataAccount dataAccount) {
         this.name = dataAccount.name();
         this.email = dataAccount.email();
         this.cityName = dataAccount.cityName();
         this.password = dataAccount.password();
+        this.isAtivo = true;
+        this.perfil = Perfis.ROLE_USER;
     }
 
     @Override

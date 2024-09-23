@@ -1,7 +1,7 @@
 package br.com.mariwheater.mariwheater.service.account;
 
 import br.com.mariwheater.mariwheater.dto.DataAccount;
-import br.com.mariwheater.mariwheater.model.Account;
+import br.com.mariwheater.mariwheater.model.account.Account;
 import br.com.mariwheater.mariwheater.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

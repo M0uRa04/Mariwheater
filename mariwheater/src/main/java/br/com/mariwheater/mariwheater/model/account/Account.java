@@ -30,10 +30,18 @@ public class Account implements UserDetails {
 
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    private Perfis perfil;
+
     private Boolean isAtivo;
 
     @Column(name = "CITY_NAME")
     private String cityName;
+
+    private Account () {
+        this.isAtivo = true;
+        this.perfil = Perfis.ROLE_USER;
+    }
 
     public Account (DataAccount dataAccount) {
         this.name = dataAccount.name();
